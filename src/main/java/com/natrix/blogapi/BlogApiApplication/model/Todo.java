@@ -1,17 +1,21 @@
 package com.natrix.blogapi.BlogApiApplication.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.natrix.blogapi.BlogApiApplication.model.audit.UserDateAudit;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import com.natrix.blogapi.BlogApiApplication.model.user.User;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "todos", uniqueConstraints = { @UniqueConstraint(columnNames = { "title" }) })
 public class Todo extends UserDateAudit {
 
@@ -21,4 +25,13 @@ public class Todo extends UserDateAudit {
 
     @Column(name = "completed")
     private Boolean completed;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @JsonIgnore
+    public User getUser() {
+        return user;
+    }
 }

@@ -1,9 +1,8 @@
 package com.natrix.blogapi.BlogApiApplication.model.user;
 
 import com.natrix.blogapi.BlogApiApplication.model.audit.UserDateAudit;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -12,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "address")
 public class Address extends UserDateAudit {
 
@@ -26,4 +26,13 @@ public class Address extends UserDateAudit {
 
     @Column(name = "zipcode")
     private String zipcode;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "geo_id")
+    private Geo geo;
+
+    @OneToOne(mappedBy = "address")
+    private User user;
+
+
 }
